@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Example class using {@link List} and {@link Map}.
@@ -60,12 +61,45 @@ public final class UseListsAndMaps {
          * using the previous lists. In order to measure times, use as example
          * TestPerformance.java.
          */
+        final int times = 100_000;
+        long time = System.nanoTime();
+        for(int i = 0; i < times; i++){
+            list.add(i);
+        }
+        time = System.nanoTime() - time;
+        var millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println(// NOPMD
+            "Adding "
+                + times
+                + " elements as a first element in a Arraylist took "
+                + time
+                + "ns ("
+                + millis
+                + "ms)"
+        );
+
+        time = System.nanoTime();
+        for(int i = 0; i < times; i++){
+            list2.add(i);
+        }
+        time = System.nanoTime() - time;
+        millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println(// NOPMD
+            "Adding "
+                + times
+                + " elements as a first element in a LinkedList took "
+                + time
+                + "ns ("
+                + millis
+                + "ms)"
+        );
         /*
          * 6) Measure the performance of reading 1000 times an element whose
          * position is in the middle of the collection for both ArrayList and
          * LinkedList, using the collections of point 5. In order to measure
          * times, use as example TestPerformance.java.
          */
+        
         /*
          * 7) Build a new Map that associates to each continent's name its
          * population:
