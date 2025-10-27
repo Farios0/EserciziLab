@@ -3,6 +3,7 @@ package it.unibo.exceptions;
 import it.unibo.exceptions.fakenetwork.api.NetworkComponent;
 import it.unibo.exceptions.fakenetwork.impl.ServiceBehindUnstableNetwork;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 import static it.unibo.exceptions.arithmetic.ArithmeticService.DIVIDED;
@@ -42,20 +43,40 @@ public final class UseArithmeticService {
         assertThrowsException(server, IllegalStateException.class, N_1, TIMES, PLUS);
         assertThrowsException(server, IllegalStateException.class, N_1, TIMES, PLUS, N_2);
     }
-
+    /*
+     * This method re-try to send message to the provided server, catching all IOExceptions,
+     * until it succeeds.
+     */
     private static void retrySendOnNetworkError(final NetworkComponent server, final String message) {
-        /*
-         * This method should re-try to send message to the provided server, catching all IOExceptions,
-         * until it succeeds.
-         */
+        boolean successo = false;
+        while (!successo){
+            try {
+                server.sendData(message);
+                successo = true;
+            } catch (IOException e) {
+                e.getMessage();
+                e.printStackTrace();
+            }
+        }
     }
 
+    /*
+     * This method should re-try to retrieve information from the provided server, catching all IOExceptions,
+     * until it succeeds.
+     */
     private static String retryReceiveOnNetworkError(final NetworkComponent server) {
-        /*
-         * This method should re-try to retrieve information from the provided server, catching all IOExceptions,
-         * until it succeeds.
-         */
-        return null;
+        boolean successo = false;
+        String result = "";
+        while(!successo){
+            try {
+                result = server.receiveResponse();
+                successo = true;
+            } catch (IOException e) {
+                e.getMessage();
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     private static void assertEqualsAsDouble(final String expected, final String actual) {
