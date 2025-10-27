@@ -57,11 +57,11 @@ public final class ServiceBehindUnstableNetwork implements NetworkComponent {
         if (KEYWORDS.contains(data) || exceptionWhenParsedAsNumber == null) {
             commandQueue.add(data);
         } else {
-            final var message = data + " is not a valid keyword (allowed: " + KEYWORDS + "), nor is a number";
-            System.out.println(message);
             commandQueue.clear();
+            throw new IllegalArgumentException(nullIfNumberOrException(data + " is not a valid keyword (allowed: " + KEYWORDS + ", nor is a number"));
+            
             /*
-             * This method, in this point, should throw an IllegalStateException.
+             * This method, in this point, should throw an IllegalArgumentException.
              * Its cause, however, is the previous NumberFormatException.
              * Always preserve the original stacktrace!
              *
@@ -80,9 +80,9 @@ public final class ServiceBehindUnstableNetwork implements NetworkComponent {
         }
     }
 
-    private void accessTheNetwork(final String message) throws IOException {
+    private void accessTheNetwork(final String message) throws NetworkException {
         if (randomGenerator.nextDouble() < failProbability) {
-            throw new IOException("Generic I/O error");
+            throw new NetworkException("Generic I/O error");
         }
     }
 
