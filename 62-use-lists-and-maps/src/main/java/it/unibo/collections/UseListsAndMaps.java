@@ -50,10 +50,13 @@ public final class UseListsAndMaps {
         /*
          * 4) Using a single for-each, print the contents of the arraylist.
          */
-
+        System.out.print("[");
         for(Integer i : list){
-            System.out.println(i);
+            System.out.print(i);
+            System.out.print(", ");
         }
+        System.out.println("]");
+        
         /*
          * 5) Measure the performance of inserting new elements in the head of
          * the collection: measure the time required to add 100.000 elements as
@@ -61,7 +64,7 @@ public final class UseListsAndMaps {
          * using the previous lists. In order to measure times, use as example
          * TestPerformance.java.
          */
-        final int times = 100_000;
+        int times = 100_000;
         long time = System.nanoTime();
         for(int i = 0; i < times; i++){
             list.add(i);
@@ -71,7 +74,7 @@ public final class UseListsAndMaps {
         System.out.println(// NOPMD
             "Adding "
                 + times
-                + " elements as a first element in a Arraylist took "
+                + " elements as a first element in a ArrayList took "
                 + time
                 + "ns ("
                 + millis
@@ -99,7 +102,39 @@ public final class UseListsAndMaps {
          * LinkedList, using the collections of point 5. In order to measure
          * times, use as example TestPerformance.java.
          */
-        
+        times = 100_0;
+        int middle = list.size()/2;
+        time = System.nanoTime();
+        for(int i = 0; i < times; i++){
+            list.get(middle);
+        }
+        time = System.nanoTime() - time;
+        millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println(// NOPMD
+            "Reading "
+                + times
+                + " elements in the middle of an ArrayList took "
+                + time
+                + "ns ("
+                + millis
+                + "ms)"
+        );
+
+        time = System.nanoTime();
+        for(int i = 0; i < times; i++){
+            list2.get(middle);
+        }
+        time = System.nanoTime() - time;
+        millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println(// NOPMD
+            "Reading "
+                + times
+                + " elements in the middle of an LinkedList took "
+                + time
+                + "ns ("
+                + millis
+                + "ms)"
+        );
         /*
          * 7) Build a new Map that associates to each continent's name its
          * population:
