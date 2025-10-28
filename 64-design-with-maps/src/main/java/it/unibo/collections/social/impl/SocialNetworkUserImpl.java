@@ -114,6 +114,9 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
         Set<U> copy = followed.get(groupName);
+        if(copy == null){
+            return Collections.emptyList(); 
+        }
         return Collections.unmodifiableCollection(copy);
     }
 
