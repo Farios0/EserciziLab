@@ -39,6 +39,8 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      * think of what type of keys and values would best suit the requirements
      */
 
+    private Map<String, Set<U>> followed;
+
     /*
      * [CONSTRUCTORS]
      *
@@ -50,6 +52,8 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      * - username
      * - age and every other necessary field
      */
+
+    
     /**
      * Builds a user participating in a social network.
      *
@@ -63,13 +67,20 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      *            alias of the user, i.e. the way a user is identified on an
      *            application
      */
-    public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
-        super(null, null, null, 0);
+    
+     public SocialNetworkUserImpl(final String firstName, final String lastName, final String userName, final int age){
+        super(firstName, lastName, userName, age);
+        followed = new HashMap<>();
     }
 
     /*
      * 2) Define a further constructor where the age defaults to -1
      */
+
+    public SocialNetworkUserImpl(final String firstName, final String lastName, final String userName){
+        super(firstName, lastName, userName, -1);
+        followed = new HashMap<>();
+    }
 
     /*
      * [METHODS]
@@ -78,7 +89,21 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      */
     @Override
     public boolean addFollowedUser(final String circle, final U user) {
-        return false;
+        Set<U> copy = followed.get(circle);
+        if(copy == null) {
+            createGroup(circle);
+            copy = followed.get(circle);
+        }
+        return copy.add(user);
+    }
+
+    /**
+     * this method is responsable of creating a group and the correspondant list to it.
+     * It is called when a User wants to add a User to a group that doesn't exists
+     * @param circle
+     */
+    private void createGroup(String circle) {
+        followed.put(circle, new HashSet<>());
     }
 
     /**
@@ -88,7 +113,8 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
      */
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+        Set<U> copy = followed.get(groupName);
+        return Collections.unmodifiableCollection(copy);
     }
 
     @Override
