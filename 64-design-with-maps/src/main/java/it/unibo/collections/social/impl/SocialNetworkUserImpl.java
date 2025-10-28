@@ -119,6 +119,11 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
 
     @Override
     public List<U> getFollowedUsers() {
-        return null;
+        List<U> result = new ArrayList<>();
+        Collection<Set<U>> total = followed.values();
+        for(Set<U> i : total){
+            result.addAll(i);
+        }
+        return result;
     }
 }
